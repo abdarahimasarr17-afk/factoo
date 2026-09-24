@@ -38,9 +38,11 @@ export function Navbar() {
           </ul>
           <div className="flex items-center gap-2">
             <ThemeToggle />
-            <a href="#waitlist" className={buttonClass("dark", "sm", "hidden sm:inline-flex")}>
-              Rejoindre la liste d’attente
-            </a>
+            <div className="hidden sm:block">
+              <a href="#waitlist" className={buttonClass("dark", "sm")}>
+                Rejoindre la liste d’attente
+              </a>
+            </div>
             <button
               type="button"
               onClick={() => setOpen((v) => !v)}

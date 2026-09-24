@@ -1,5 +1,7 @@
 import { Faq } from "@/components/landing/Faq";
 import { Features } from "@/components/landing/Features";
+import { FinalCta } from "@/components/landing/FinalCta";
+import { Footer } from "@/components/landing/Footer";
 import { Hero } from "@/components/landing/Hero";
 import { HowItWorks } from "@/components/landing/HowItWorks";
 import { Navbar } from "@/components/landing/Navbar";
@@ -21,7 +23,9 @@ export default function Home() {
         <Pricing />
         <Trust />
         <Faq />
+        <FinalCta />
       </main>
+      <Footer />
     </>
   );
 }
