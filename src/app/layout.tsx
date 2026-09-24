@@ -13,8 +13,12 @@ const title = "Factoo — Facturez et faites-vous payer depuis WhatsApp";
 const description =
   "Factoo permet aux freelances et PME d’Afrique de l’Ouest de créer une facture en 2 minutes et de se faire payer directement depuis WhatsApp, sans que le client ait besoin de compte.";
 
+const vercelUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL;
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL || (vercelUrl ? `https://${vercelUrl}` : "http://localhost:3000");
+
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
+  metadataBase: new URL(siteUrl),
   title,
   description,
   openGraph: {
