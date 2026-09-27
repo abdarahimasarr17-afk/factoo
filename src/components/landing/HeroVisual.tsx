@@ -1,5 +1,18 @@
-import { BatteryFull, BellRing, CheckCircle2, CreditCard, Lock, Signal, Wifi } from "lucide-react";
+import { BatteryFull, BellRing, CheckCircle2, CreditCard, Lock, MessageCircle, Signal, Wifi } from "lucide-react";
 import Image from "next/image";
+import { AfricaMap } from "@/components/landing/AfricaMap";
+import { cn } from "@/lib/cn";
+
+function FloatingIcon({ children, className, delay }: { children: React.ReactNode; className: string; delay: string }) {
+  return (
+    <div
+      className={cn("animate-float absolute rounded-2xl bg-white/10 p-1.5 shadow-xl ring-1 ring-white/15 backdrop-blur", className)}
+      style={{ animationDelay: delay }}
+    >
+      {children}
+    </div>
+  );
+}
 
 const PAYMENT_OPTIONS = [
   { name: "Wave", logo: "/logos/wave.png", selected: true },
@@ -12,6 +25,22 @@ export function HeroVisual() {
   return (
     <div className="relative mx-auto flex w-full max-w-md justify-center px-4 pb-24 pt-16 sm:py-10" aria-hidden="true">
       <div className="pointer-events-none absolute inset-0 m-auto h-72 w-72 rounded-full bg-[#00C853]/25 blur-3xl" />
+      <AfricaMap className="absolute left-1/2 top-1/2 w-[420px] max-w-none -translate-x-1/2 -translate-y-1/2 sm:w-[560px] lg:-left-[120px] lg:-top-[40px] lg:w-[700px] lg:translate-x-0 lg:translate-y-0" />
+
+      <FloatingIcon className="left-0 top-[14%] sm:-left-6" delay="0s">
+        <Image src="/logos/wave.png" alt="" width={44} height={44} className="h-11 w-11 rounded-xl" />
+      </FloatingIcon>
+      <FloatingIcon className="right-0 top-[44%] sm:-right-6" delay="1s">
+        <Image src="/logos/orange-money.png" alt="" width={44} height={44} className="h-11 w-11 rounded-xl" />
+      </FloatingIcon>
+      <FloatingIcon className="hidden -left-2 top-[58%] sm:block" delay="2s">
+        <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#25D366]">
+          <MessageCircle className="h-6 w-6 text-white" />
+        </span>
+      </FloatingIcon>
+      <FloatingIcon className="hidden -right-4 bottom-[18%] sm:block" delay="0.5s">
+        <span className="rounded-xl bg-white px-3 py-2 text-sm font-extrabold text-black">FCFA</span>
+      </FloatingIcon>
 
       <div className="relative w-[260px] rounded-[2.75rem] bg-[#0b0b0b] p-2.5 shadow-2xl ring-1 ring-white/10 sm:w-[290px]">
         <span className="absolute -left-[3px] top-24 h-10 w-[3px] rounded-l bg-[#1f1f1f]" />
