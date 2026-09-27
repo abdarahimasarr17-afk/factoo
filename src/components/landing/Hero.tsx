@@ -16,11 +16,10 @@ export function Hero() {
       <Container className="relative grid items-center gap-12 lg:grid-cols-2">
         <div>
           <h1 className="text-4xl font-extrabold leading-[1.1] tracking-tight sm:text-5xl lg:text-6xl">
-            Facturez en 2 minutes. <span className="text-primary-light">Faites-vous payer depuis WhatsApp.</span>
+            Facturez en 2 min. Faites-vous payer depuis <span className="text-[#00C853]">WhatsApp</span>.
           </h1>
-          <p className="mt-6 max-w-xl text-lg text-white/75">
-            Créez une facture conforme, envoyez un lien de paiement par WhatsApp, et votre client paie en 3 taps —
-            Wave, Orange Money ou carte. Sans compte.
+          <p className="mt-6 max-w-xl text-lg text-white/60">
+            Envoyez un lien : votre client paie par Wave ou Orange Money.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <a href="#waitlist" className={buttonClass("brand")}>
