@@ -1,46 +1,108 @@
-import { BellRing, CheckCircle2 } from "lucide-react";
+import { BatteryFull, BellRing, CheckCircle2, CreditCard, Lock, Signal, Wifi } from "lucide-react";
 
+const PAYMENT_OPTIONS = [
+  { name: "Wave", color: "#1DC3F0", selected: true },
+  { name: "Orange Money", color: "#FF7900", selected: false },
+  { name: "Carte bancaire", color: "#1A1F71", selected: false },
+];
+
+// Maquette décorative : téléphone dessiné en HTML/CSS affichant la page de paiement vue par le client.
 export function HeroVisual() {
   return (
-    <div className="relative mx-auto w-full max-w-sm px-4 py-8 sm:px-8 lg:max-w-md" aria-hidden="true">
-      <div className="rounded-3xl bg-white p-6 text-slate-900 shadow-2xl">
-        <div className="flex items-start justify-between">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">Facture</p>
-            <p className="text-lg font-extrabold">FAC-2026-0042</p>
+    <div className="relative mx-auto flex w-full max-w-md justify-center px-4 pb-24 pt-16 sm:py-10" aria-hidden="true">
+      <div className="pointer-events-none absolute inset-0 m-auto h-72 w-72 rounded-full bg-[#00C853]/25 blur-3xl" />
+
+      <div className="relative w-[260px] rounded-[2.75rem] bg-[#0b0b0b] p-2.5 shadow-2xl ring-1 ring-white/10 sm:w-[290px] sm:-rotate-3">
+        <span className="absolute -left-[3px] top-24 h-10 w-[3px] rounded-l bg-[#1f1f1f]" />
+        <span className="absolute -left-[3px] top-36 h-14 w-[3px] rounded-l bg-[#1f1f1f]" />
+        <span className="absolute -right-[3px] top-32 h-16 w-[3px] rounded-r bg-[#1f1f1f]" />
+
+        <div className="relative h-[560px] overflow-hidden rounded-[2.25rem] bg-[#F5F7F6] text-slate-900 sm:h-[590px]">
+          <span className="absolute left-1/2 top-2.5 h-6 w-24 -translate-x-1/2 rounded-full bg-black" />
+          <div className="flex items-center justify-between px-6 pt-3 text-[11px] font-semibold">
+            <span>9:41</span>
+            <span className="flex items-center gap-1">
+              <Signal className="h-3 w-3" />
+              <Wifi className="h-3 w-3" />
+              <BatteryFull className="h-3.5 w-3.5" />
+            </span>
           </div>
-          <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-700">En attente</span>
+
+          <div className="px-4 pt-6">
+            <div className="flex items-center gap-2.5">
+              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#00C853] text-xs font-extrabold text-black">
+                AD
+              </span>
+              <div>
+                <p className="text-[10px] text-slate-500">Facture de</p>
+                <p className="text-sm font-bold">Studio Awa Design</p>
+              </div>
+            </div>
+
+            <div className="mt-4 rounded-2xl bg-white p-4 shadow-sm">
+              <div className="flex items-center justify-between text-[10px] text-slate-500">
+                <span className="font-semibold">FAC-2026-0042</span>
+                <span>Échéance : 30 oct.</span>
+              </div>
+              <p className="mt-2 text-[10px] font-semibold uppercase tracking-wider text-slate-500">Montant à payer</p>
+              <p className="text-2xl font-extrabold">150 000 FCFA</p>
+              <ul className="mt-3 space-y-1.5 border-t border-slate-100 pt-3 text-[11px]">
+                <li className="flex justify-between gap-3">
+                  <span>Identité visuelle × 1</span>
+                  <span className="whitespace-nowrap font-semibold">120 000</span>
+                </li>
+                <li className="flex justify-between gap-3">
+                  <span>Visuels réseaux sociaux × 2</span>
+                  <span className="whitespace-nowrap font-semibold">30 000</span>
+                </li>
+              </ul>
+            </div>
+
+            <p className="mt-4 text-[11px] font-bold">Payer avec</p>
+            <ul className="mt-2 space-y-2">
+              {PAYMENT_OPTIONS.map((option) => (
+                <li
+                  key={option.name}
+                  className={`flex items-center justify-between rounded-xl border bg-white px-3 py-2.5 text-xs font-semibold ${
+                    option.selected ? "border-[#00C853] ring-1 ring-[#00C853]" : "border-slate-200"
+                  }`}
+                >
+                  <span className="flex items-center gap-2.5">
+                    {option.name === "Carte bancaire" ? (
+                      <CreditCard className="h-4 w-4" style={{ color: option.color }} />
+                    ) : (
+                      <span className="h-4 w-4 rounded-md" style={{ backgroundColor: option.color }} />
+                    )}
+                    {option.name}
+                  </span>
+                  <span
+                    className={`h-4 w-4 rounded-full border-2 ${
+                      option.selected ? "border-[#00C853] bg-[#00C853] shadow-[inset_0_0_0_2px_white]" : "border-slate-300"
+                    }`}
+                  />
+                </li>
+              ))}
+            </ul>
+
+            <div className="mt-4 rounded-xl bg-[#00C853] py-3 text-center text-sm font-bold text-black">
+              Payer 150 000 FCFA
+            </div>
+            <p className="mt-3 flex items-center justify-center gap-1 text-[10px] text-slate-500">
+              <Lock className="h-3 w-3" /> Paiement sécurisé · Facture créée avec Factoo
+            </p>
+          </div>
         </div>
-        <p className="mt-4 text-sm text-slate-500">
-          Client : <span className="font-semibold text-slate-800">Agence Teranga</span>
-        </p>
-        <ul className="mt-4 space-y-2 border-y border-slate-100 py-4 text-sm">
-          <li className="flex justify-between gap-4">
-            <span>Identité visuelle × 1</span>
-            <span className="font-semibold">120 000</span>
-          </li>
-          <li className="flex justify-between gap-4">
-            <span>Visuels réseaux sociaux × 2</span>
-            <span className="font-semibold">30 000</span>
-          </li>
-        </ul>
-        <div className="mt-4 flex items-baseline justify-between">
-          <span className="text-sm font-semibold text-slate-500">Total TTC</span>
-          <span className="text-2xl font-extrabold text-[#0F766E]">150 000 FCFA</span>
-        </div>
-        <div className="mt-5 rounded-full bg-[#0F766E] py-3 text-center font-bold text-white">Payer maintenant</div>
-        <p className="mt-3 text-center text-xs text-slate-500">Wave · Orange Money · Carte</p>
       </div>
 
-      <div className="animate-float absolute -top-1 right-0 flex items-center gap-3 rounded-2xl bg-white px-4 py-3 text-slate-900 shadow-xl">
-        <CheckCircle2 className="h-8 w-8 text-[#0F766E]" />
+      <div className="animate-float absolute right-0 top-0 flex items-center gap-3 rounded-2xl bg-white px-4 py-3 text-slate-900 shadow-xl sm:-right-4 sm:top-16">
+        <CheckCircle2 className="h-8 w-8 text-[#00C853]" />
         <div>
           <p className="text-sm font-bold">Payée via Wave</p>
           <p className="text-xs text-slate-500">150 000 FCFA · à l’instant</p>
         </div>
       </div>
 
-      <div className="animate-float absolute -bottom-2 left-0 max-w-[240px] rounded-2xl bg-white px-4 py-3 text-black shadow-xl [animation-delay:1.5s]">
+      <div className="animate-float absolute bottom-0 left-0 max-w-[230px] sm:bottom-2 rounded-2xl bg-white px-4 py-3 text-black shadow-xl [animation-delay:1.5s] sm:-left-4">
         <p className="flex items-center gap-2 text-xs font-bold">
           <BellRing className="h-4 w-4 text-[#00C853]" /> Relance J+3 envoyée
         </p>
