@@ -19,7 +19,7 @@ export function Pricing() {
             <div
               key={plan.id}
               className={cn(
-                "relative flex flex-col rounded-3xl border p-8",
+                "relative flex flex-col rounded-3xl border p-6 sm:p-8",
                 plan.highlight ? "border-primary bg-card shadow-xl ring-2 ring-primary" : "border-border bg-card",
               )}
             >

@@ -1,4 +1,4 @@
-import { ArrowRight, MessageCircle, Zap } from "lucide-react";
+import { ArrowRight, MessageCircle } from "lucide-react";
 import { HeroVisual } from "@/components/landing/HeroVisual";
 import { buttonClass } from "@/components/ui/button";
 import { Container } from "@/components/ui/Container";
@@ -15,11 +15,7 @@ export function Hero() {
       />
       <Container className="relative grid items-center gap-12 lg:grid-cols-2">
         <div>
-          <p className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-sm font-medium">
-            <Zap className="h-4 w-4 text-accent" aria-hidden="true" />
-            Bientôt disponible · Sénégal, Côte d’Ivoire, Mali…
-          </p>
-          <h1 className="mt-6 text-4xl font-extrabold leading-[1.1] tracking-tight sm:text-5xl lg:text-6xl">
+          <h1 className="text-4xl font-extrabold leading-[1.1] tracking-tight sm:text-5xl lg:text-6xl">
             Facturez en 2 minutes. <span className="text-primary-light">Faites-vous payer depuis WhatsApp.</span>
           </h1>
           <p className="mt-6 max-w-xl text-lg text-white/75">
