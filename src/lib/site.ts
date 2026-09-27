@@ -105,9 +105,9 @@ export const FAQ: { question: string; answer: string }[] = [
   },
 ];
 
-export const PAYMENT_METHODS: { name: string; color: string }[] = [
-  { name: "Wave", color: "#1DC3F0" },
-  { name: "Orange Money", color: "#FF7900" },
+export const PAYMENT_METHODS: { name: string; color: string; logo?: string }[] = [
+  { name: "Wave", color: "#1DC3F0", logo: "/logos/wave.png" },
+  { name: "Orange Money", color: "#FF7900", logo: "/logos/orange-money.png" },
   { name: "Visa", color: "#1A1F71" },
   { name: "Mastercard", color: "#EB001B" },
 ];

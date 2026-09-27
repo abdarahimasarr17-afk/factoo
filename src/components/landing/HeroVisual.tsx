@@ -1,9 +1,10 @@
 import { BatteryFull, BellRing, CheckCircle2, CreditCard, Lock, Signal, Wifi } from "lucide-react";
+import Image from "next/image";
 
 const PAYMENT_OPTIONS = [
-  { name: "Wave", color: "#1DC3F0", selected: true },
-  { name: "Orange Money", color: "#FF7900", selected: false },
-  { name: "Carte bancaire", color: "#1A1F71", selected: false },
+  { name: "Wave", logo: "/logos/wave.png", selected: true },
+  { name: "Orange Money", logo: "/logos/orange-money.png", selected: false },
+  { name: "Carte bancaire", logo: null, selected: false },
 ];
 
 // Maquette décorative : téléphone dessiné en HTML/CSS affichant la page de paiement vue par le client.
@@ -12,12 +13,12 @@ export function HeroVisual() {
     <div className="relative mx-auto flex w-full max-w-md justify-center px-4 pb-24 pt-16 sm:py-10" aria-hidden="true">
       <div className="pointer-events-none absolute inset-0 m-auto h-72 w-72 rounded-full bg-[#00C853]/25 blur-3xl" />
 
-      <div className="relative w-[260px] rounded-[2.75rem] bg-[#0b0b0b] p-2.5 shadow-2xl ring-1 ring-white/10 sm:w-[290px] sm:-rotate-3">
+      <div className="relative w-[260px] rounded-[2.75rem] bg-[#0b0b0b] p-2.5 shadow-2xl ring-1 ring-white/10 sm:w-[290px]">
         <span className="absolute -left-[3px] top-24 h-10 w-[3px] rounded-l bg-[#1f1f1f]" />
         <span className="absolute -left-[3px] top-36 h-14 w-[3px] rounded-l bg-[#1f1f1f]" />
         <span className="absolute -right-[3px] top-32 h-16 w-[3px] rounded-r bg-[#1f1f1f]" />
 
-        <div className="relative h-[560px] overflow-hidden rounded-[2.25rem] bg-[#F5F7F6] text-slate-900 sm:h-[590px]">
+        <div className="relative h-[610px] overflow-hidden rounded-[2.25rem] bg-[#F5F7F6] text-slate-900 sm:h-[590px]">
           <span className="absolute left-1/2 top-2.5 h-6 w-24 -translate-x-1/2 rounded-full bg-black" />
           <div className="flex items-center justify-between px-6 pt-3 text-[11px] font-semibold">
             <span>9:41</span>
@@ -68,10 +69,12 @@ export function HeroVisual() {
                   }`}
                 >
                   <span className="flex items-center gap-2.5">
-                    {option.name === "Carte bancaire" ? (
-                      <CreditCard className="h-4 w-4" style={{ color: option.color }} />
+                    {option.logo ? (
+                      <Image src={option.logo} alt="" width={24} height={24} className="h-6 w-6 rounded-md" />
                     ) : (
-                      <span className="h-4 w-4 rounded-md" style={{ backgroundColor: option.color }} />
+                      <span className="flex h-6 w-6 items-center justify-center rounded-md bg-[#1A1F71]">
+                        <CreditCard className="h-3.5 w-3.5 text-white" />
+                      </span>
                     )}
                     {option.name}
                   </span>
