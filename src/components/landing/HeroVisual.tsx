@@ -40,9 +40,9 @@ export function HeroVisual() {
         </div>
       </div>
 
-      <div className="animate-float absolute -bottom-2 left-0 max-w-[240px] rounded-2xl bg-[#DCF8C6] px-4 py-3 text-slate-900 shadow-xl [animation-delay:1.5s]">
-        <p className="flex items-center gap-2 text-xs font-bold text-[#075E54]">
-          <BellRing className="h-4 w-4" /> Relance J+3 envoyée
+      <div className="animate-float absolute -bottom-2 left-0 max-w-[240px] rounded-2xl bg-white px-4 py-3 text-black shadow-xl [animation-delay:1.5s]">
+        <p className="flex items-center gap-2 text-xs font-bold">
+          <BellRing className="h-4 w-4 text-[#00C853]" /> Relance J+3 envoyée
         </p>
         <p className="mt-1 text-xs">Bonjour, petit rappel pour la facture FAC-2026-0042…</p>
       </div>

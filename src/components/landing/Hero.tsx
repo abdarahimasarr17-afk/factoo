@@ -23,8 +23,8 @@ export function Hero() {
             Wave, Orange Money ou carte. Sans compte.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <a href="#waitlist" className={buttonClass("light")}>
-              Rejoindre la liste d’attente <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            <a href="#waitlist" className={buttonClass("brand")}>
+              Commencer gratuitement <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </a>
             {whatsapp && (
               <a href={whatsapp} target="_blank" rel="noopener noreferrer" className={buttonClass("ghost")}>

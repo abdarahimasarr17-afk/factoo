@@ -33,7 +33,7 @@ export function Navbar() {
             ))}
           </ul>
           <div className="flex items-center gap-2">
-            <a href="#waitlist" className={buttonClass("light", "xs")}>
+            <a href="#waitlist" className={buttonClass("brand", "xs")}>
               <span>
                 Commencer<span className="max-[374px]:hidden"> gratuitement</span>
               </span>
