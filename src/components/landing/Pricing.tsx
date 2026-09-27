@@ -23,12 +23,8 @@ export function Pricing() {
                 plan.highlight ? "border-primary bg-card shadow-xl ring-2 ring-primary" : "border-border bg-card",
               )}
             >
-              {plan.highlight && (
-                <span className="absolute -top-3 left-8 rounded-full bg-accent px-3 py-1 text-xs font-bold text-slate-900">
-                  Le plus choisi
-                </span>
-              )}
               <h3 className="text-xl font-extrabold text-foreground">{plan.name}</h3>
+              {plan.highlight && <p className="mt-1 text-sm font-semibold italic text-primary">Tarif de lancement garanti</p>}
               <p className="mt-4 flex flex-wrap items-baseline gap-x-2">
                 {plan.oldPrice && (
                   <span className="text-lg text-muted line-through">
@@ -40,10 +36,18 @@ export function Pricing() {
                 <span className="text-muted">{plan.period}</span>
               </p>
               {plan.yearly && (
-                <p className="mt-1 text-sm text-muted">
-                  ou <span className="line-through">{plan.yearly.oldPrice}</span>{" "}
-                  <span className="font-bold text-foreground">{plan.yearly.price}</span> par an
-                </p>
+                <div className="mt-2 text-sm text-muted">
+                  <p>
+                    ou à l’année{" "}
+                    <span className="line-through">
+                      <span className="sr-only">au lieu de </span>
+                      {plan.yearly.oldPrice}
+                    </span>
+                  </p>
+                  <p>
+                    <span className="text-base font-bold text-foreground">{plan.yearly.price}</span> par an
+                  </p>
+                </div>
               )}
               <ul className="mt-6 flex-1 space-y-3">
                 {plan.features.map((feature) => (
@@ -57,7 +61,7 @@ export function Pricing() {
                 href="#waitlist"
                 className={buttonClass(plan.highlight ? "primary" : "outline", "md", "mt-8 w-full")}
               >
-                Rejoindre la liste d’attente
+                {plan.cta}
               </a>
             </div>
           ))}

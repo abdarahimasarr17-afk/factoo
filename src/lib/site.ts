@@ -30,6 +30,7 @@ export type Plan = {
   period: string;
   yearly: { price: string; oldPrice: string } | null;
   highlight: boolean;
+  cta: string;
   features: string[];
 };
 
@@ -42,6 +43,7 @@ export const PLANS: Plan[] = [
     period: "pour toujours",
     yearly: null,
     highlight: false,
+    cta: "Commencer gratuitement",
     features: [
       "3 factures par mois",
       "PDF conforme SYSCOHADA",
@@ -59,6 +61,7 @@ export const PLANS: Plan[] = [
     period: "par mois",
     yearly: { price: "50 000 FCFA", oldPrice: "100 000 FCFA" },
     highlight: true,
+    cta: "Passer au Pro",
     features: [
       "Factures illimitées",
       "Lien de paiement Wave · Orange Money · carte",
