@@ -3,7 +3,7 @@ import { Container } from "@/components/ui/Container";
 // Trois chiffres de tailles différentes, décalés en cascade (de haut en bas, de gauche à droite).
 export function Stats() {
   return (
-    <section aria-label="Factoo en chiffres" className="bg-[#04201D] pb-12 pt-4 text-white">
+    <section aria-label="Factoo en chiffres" className="border-y border-[rgba(0,200,83,0.1)] bg-[#04201D] py-20 text-white">
       <Container>
         <dl className="grid gap-5 sm:grid-cols-12 sm:items-start sm:gap-6">
           <div className="border-l-4 border-[#00C853] pl-5 sm:col-span-5">
