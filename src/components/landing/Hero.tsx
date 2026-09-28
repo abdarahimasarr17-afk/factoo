@@ -8,7 +8,7 @@ export function Hero() {
   const whatsapp = siteWhatsappLink();
 
   return (
-    <section id="top" className="relative overflow-hidden bg-hero pb-20 pt-32 text-white sm:pt-40">
+    <section id="top" className="relative overflow-hidden bg-[#04201D] pb-6 pt-32 text-white sm:pt-40">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(20,184,166,0.35),transparent_60%)]"
