@@ -64,7 +64,12 @@ try {
     .from("logos")
     .upload(`${a.id}/test-${stamp}.webp`, bytes, { contentType: "image/webp" });
   check("A peut écrire dans son propre dossier logo", !ownUpload, ownUpload?.message);
-  if (!ownUpload) await a.client.storage.from("logos").remove([`${a.id}/test-${stamp}.webp`]);
+
+  const { data: foreignRemoved } = await b.client.storage.from("logos").remove([`${a.id}/test-${stamp}.webp`]);
+  check("B ne peut pas supprimer le logo de A", (foreignRemoved?.length ?? 0) === 0);
+
+  const { data: removed } = await a.client.storage.from("logos").remove([`${a.id}/test-${stamp}.webp`]);
+  check("A peut supprimer son propre logo", removed?.length === 1);
 } catch (error) {
   check("exécution du script", false, String(error?.message ?? error));
 } finally {
