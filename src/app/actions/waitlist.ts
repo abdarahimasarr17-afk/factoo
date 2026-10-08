@@ -1,6 +1,6 @@
 "use server";
 
-import { getSupabaseAdmin } from "@/lib/supabase";
+import { getSupabaseAdmin } from "@/lib/supabase/admin";
 import { submitWaitlist, type WaitlistState } from "@/lib/waitlist";
 
 export async function joinWaitlist(_prev: WaitlistState, formData: FormData): Promise<WaitlistState> {
