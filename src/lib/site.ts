@@ -13,6 +13,28 @@ export const COUNTRIES: { code: CountryCode; name: string; dial: string }[] = [
   { code: "OTHER", name: "Autre pays", dial: "" },
 ];
 
+export const CURRENCIES = ["XOF", "XAF", "EUR"] as const;
+export type Currency = (typeof CURRENCIES)[number];
+
+export const CURRENCY_LABELS: Record<Currency, string> = {
+  XOF: "FCFA (XOF) — zone UEMOA",
+  XAF: "FCFA (XAF) — zone CEMAC",
+  EUR: "Euro (EUR)",
+};
+
+// Taux de TVA indicatifs, à faire valider par un comptable de la zone avant lancement.
+export const COUNTRY_DEFAULTS: Record<CountryCode, { currency: Currency; vatRate: number }> = {
+  SN: { currency: "XOF", vatRate: 18 },
+  CI: { currency: "XOF", vatRate: 18 },
+  ML: { currency: "XOF", vatRate: 18 },
+  BF: { currency: "XOF", vatRate: 18 },
+  BJ: { currency: "XOF", vatRate: 18 },
+  TG: { currency: "XOF", vatRate: 18 },
+  NE: { currency: "XOF", vatRate: 19 },
+  CM: { currency: "XAF", vatRate: 19.25 },
+  OTHER: { currency: "XOF", vatRate: 0 },
+};
+
 export const PROFILE_VALUES = ["freelance", "pme", "ecommerce"] as const;
 export type ProfileValue = (typeof PROFILE_VALUES)[number];
 
