@@ -1,4 +1,4 @@
-import { BatteryFull, CheckCircle2, CreditCard, Lock, Signal, Wifi } from "lucide-react";
+import { BatteryFull, CheckCircle2, Lock, Signal, Wifi } from "lucide-react";
 import Image from "next/image";
 import { AfricaMap } from "@/components/landing/AfricaMap";
 
@@ -74,12 +74,17 @@ export function HeroVisual() {
                     {option.logo ? (
                       <Image src={option.logo} alt="" width={24} height={24} className="h-6 w-6 rounded-md" />
                     ) : (
-                      <span className="flex h-6 w-6 items-center justify-center rounded-md bg-[#1A1F71]">
-                        <CreditCard className="h-3.5 w-3.5 text-white" />
+                      <span className="flex h-6 w-6 items-center justify-center rounded-md border border-slate-200 bg-white">
+                        <Image src="/logos/mastercard.png" alt="" width={18} height={12} className="h-3 w-auto" />
                       </span>
                     )}
                     {option.name}
                   </span>
+                  {!option.logo && (
+                    <span className="ml-auto mr-2 flex items-center">
+                      <Image src="/logos/visa.png" alt="" width={31} height={10} className="h-2.5 w-auto" />
+                    </span>
+                  )}
                   <span
                     className={`h-4 w-4 rounded-full border-2 ${
                       option.selected ? "border-[#00C853] bg-[#00C853] shadow-[inset_0_0_0_2px_white]" : "border-slate-300"

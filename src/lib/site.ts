@@ -125,9 +125,10 @@ export const FAQ: { question: string; answer: string }[] = [
   },
 ];
 
-export const PAYMENT_METHODS: { name: string; color: string; logo?: string }[] = [
+// logoWidth : largeur pour 20 px de haut. wordmark : le logo contient déjà le nom (texte masqué visuellement).
+export const PAYMENT_METHODS: { name: string; color: string; logo?: string; logoWidth?: number; wordmark?: boolean }[] = [
   { name: "Wave", color: "#1DC3F0", logo: "/logos/wave.png" },
   { name: "Orange Money", color: "#FF7900", logo: "/logos/orange-money.png" },
-  { name: "Visa", color: "#1A1F71" },
-  { name: "Mastercard", color: "#EB001B" },
+  { name: "Visa", color: "#1A1F71", logo: "/logos/visa.png", logoWidth: 62, wordmark: true },
+  { name: "Mastercard", color: "#EB001B", logo: "/logos/mastercard.png", logoWidth: 30 },
 ];

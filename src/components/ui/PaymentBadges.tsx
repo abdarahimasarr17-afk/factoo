@@ -11,11 +11,17 @@ export function PaymentBadges({ className }: { className?: string }) {
           className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1.5 text-sm font-semibold text-foreground"
         >
           {method.logo ? (
-            <Image src={method.logo} alt="" width={20} height={20} className="h-5 w-5 rounded-md" />
+            <Image
+              src={method.logo}
+              alt=""
+              width={method.logoWidth ?? 20}
+              height={20}
+              className={method.logoWidth ? "h-5 w-auto" : "h-5 w-5 rounded-md"}
+            />
           ) : (
             <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: method.color }} aria-hidden="true" />
           )}
-          {method.name}
+          <span className={method.wordmark ? "sr-only" : undefined}>{method.name}</span>
         </li>
       ))}
     </ul>
