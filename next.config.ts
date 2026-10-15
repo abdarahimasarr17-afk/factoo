@@ -8,7 +8,9 @@ const nextConfig: NextConfig = {
   // l’onboarding et les paramètres plantent sur Vercel dès qu’ils chargent le module logo.
   outputFileTracingIncludes: {
     "/app/**/*": ["./node_modules/@img/**/*"],
+    "/f/**/*": ["./node_modules/@img/**/*"],
   },
+  serverExternalPackages: ["@react-pdf/renderer"],
   experimental: {
     serverActions: { bodySizeLimit: "6mb" },
   },
