@@ -1,4 +1,5 @@
 import { ArrowRight, MessageCircle } from "lucide-react";
+import Link from "next/link";
 import { HeroVisual } from "@/components/landing/HeroVisual";
 import { buttonClass } from "@/components/ui/button";
 import { Container } from "@/components/ui/Container";
@@ -22,9 +23,9 @@ export function Hero() {
             Envoyez un lien : votre client paie par Wave ou Orange Money.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <a href="#waitlist" className={buttonClass("brand")}>
-              Commencer gratuitement <ArrowRight className="h-4 w-4" aria-hidden="true" />
-            </a>
+            <Link href="/inscription" className={buttonClass("brand")}>
+              Créer mon compte gratuit <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Link>
             {whatsapp && (
               <a href={whatsapp} target="_blank" rel="noopener noreferrer" className={buttonClass("ghost")}>
                 <MessageCircle className="h-4 w-4" aria-hidden="true" /> Discuter sur WhatsApp

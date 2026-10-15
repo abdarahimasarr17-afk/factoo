@@ -1,6 +1,7 @@
 "use client";
 
 import { Menu, X } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 import { buttonClass } from "@/components/ui/button";
 import { Logo } from "@/components/ui/Logo";
@@ -33,11 +34,14 @@ export function Navbar() {
             ))}
           </ul>
           <div className="flex items-center gap-2">
-            <a href="#waitlist" className={buttonClass("brand", "xs")}>
+            <Link href="/connexion" className="whitespace-nowrap px-2 text-sm font-medium text-white/70 transition hover:text-white">
+              Se connecter
+            </Link>
+            <Link href="/inscription" className={buttonClass("brand", "xs")}>
               <span>
                 Commencer<span className="max-[374px]:hidden"> gratuitement</span>
               </span>
-            </a>
+            </Link>
             <button
               type="button"
               onClick={() => setOpen((v) => !v)}

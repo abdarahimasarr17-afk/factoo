@@ -58,7 +58,7 @@ export function Pricing() {
                 ))}
               </ul>
               <a
-                href="#waitlist"
+                href="/inscription"
                 className={buttonClass(plan.highlight ? "primary" : "outline", "md", "mt-8 w-full")}
               >
                 {plan.cta}
