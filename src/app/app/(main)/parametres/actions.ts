@@ -5,7 +5,7 @@ import { changePassword } from "@/lib/auth";
 import type { FormState } from "@/lib/form-state";
 import { profileRepo } from "@/lib/repos";
 import { getSession } from "@/lib/session";
-import { deleteLogo, saveBilling, saveCompany, saveLogo } from "@/lib/settings";
+import { deleteLogo, saveBilling, saveCompany, saveLogo, savePayment } from "@/lib/settings";
 import { authApi } from "@/lib/supabase/server";
 
 const entries = (formData: FormData) => Object.fromEntries(formData);
@@ -39,4 +39,8 @@ export async function deleteLogoAction() {
 export async function changePasswordAction(_prev: FormState, formData: FormData) {
   const { supabase } = await getSession();
   return changePassword(authApi(supabase), entries(formData));
+}
+
+export async function savePaymentAction(_prev: FormState, formData: FormData) {
+  return withProfile(({ supabase, user }) => savePayment(profileRepo(supabase, user.id), entries(formData)));
 }

@@ -3,6 +3,7 @@ import { BillingForm } from "@/components/app/BillingForm";
 import { CompanyForm } from "@/components/app/CompanyForm";
 import { LogoForm } from "@/components/app/LogoForm";
 import { PasswordForm } from "@/components/app/PasswordForm";
+import { PaymentForm } from "@/components/app/PaymentForm";
 import { splitPhone } from "@/lib/phone";
 import { logoUrl } from "@/lib/profile";
 import { getSession } from "@/lib/session";
@@ -50,7 +51,20 @@ export default async function SettingsPage() {
       </Section>
 
       <Section title="Facturation">
-        <BillingForm initial={{ currency: profile.currency, vatRate: String(profile.vat_rate).replace(".", ",") }} />
+        <BillingForm initial={{ currency: profile.currency, vatRate: String(profile.vat_rate).replace(".", ","), dueDays: String(profile.default_due_days) }} />
+      </Section>
+
+      <Section title="Paiement" description="Affiché sur vos factures pour que vos clients sachent comment vous régler.">
+        <PaymentForm
+          initial={{
+            waveCountryCode: splitPhone(profile.wave_number, dial).countryCode,
+            wavePhone: splitPhone(profile.wave_number, dial).phone,
+            omCountryCode: splitPhone(profile.orange_money_number, dial).countryCode,
+            omPhone: splitPhone(profile.orange_money_number, dial).phone,
+            iban: profile.iban ?? "",
+            paymentNote: profile.payment_note ?? "",
+          }}
+        />
       </Section>
 
       <Section title="Compte">

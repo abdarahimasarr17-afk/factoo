@@ -8,7 +8,7 @@ import type { FormState } from "@/lib/form-state";
 import { CURRENCIES, CURRENCY_LABELS } from "@/lib/site";
 import { useFormValues } from "@/lib/use-form-values";
 
-export function BillingForm({ initial }: { initial: { currency: string; vatRate: string } }) {
+export function BillingForm({ initial }: { initial: { currency: string; vatRate: string; dueDays: string } }) {
   const [state, action] = useActionState(saveBillingAction, {} as FormState);
   const { bind } = useFormValues(initial);
   const errors = state.fieldErrors ?? {};
@@ -35,6 +35,13 @@ export function BillingForm({ initial }: { initial: { currency: string; vatRate:
             className={inputClass}
             {...bind("vatRate")}
           />
+        </Field>
+        <Field id="dueDays" label="Échéance par défaut" error={errors.dueDays}>
+          <select id="dueDays" aria-describedby="dueDays-msg" className={inputClass} {...bind("dueDays")}>
+            <option value="0">À réception</option>
+            <option value="15">15 jours</option>
+            <option value="30">30 jours</option>
+          </select>
         </Field>
       </div>
       <SubmitButton className="sm:justify-self-end">Enregistrer</SubmitButton>

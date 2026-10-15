@@ -7,14 +7,17 @@ import {
   parseBilling,
   parseCompany,
   parseOnboarding,
+  parsePayment,
   type BillingField,
   type BillingInput,
   type CompanyField,
   type CompanyInput,
   type OnboardingField,
+  type PaymentField,
+  type PaymentInput,
 } from "@/lib/validation";
 
-export type ProfilePatch = Partial<CompanyInput & BillingInput & { logo_path: string | null; onboarded_at: string }>;
+export type ProfilePatch = Partial<CompanyInput & BillingInput & PaymentInput & { logo_path: string | null; onboarded_at: string }>;
 
 export interface ProfileRepo {
   update(patch: ProfilePatch): Promise<DbResult>;
@@ -107,4 +110,12 @@ export async function deleteLogo(repo: ProfileRepo, currentPath: string | null):
   if (error) return dbFail("retrait du logo", error);
   if (currentPath) await repo.removeLogo(currentPath);
   return { ok: true, message: "Logo retiré." };
+}
+
+export async function savePayment(repo: ProfileRepo, raw: Raw): Promise<FormState<PaymentField>> {
+  const parsed = parsePayment(raw);
+  if (!parsed.success) return { ok: false, fieldErrors: parsed.fieldErrors };
+  const { error } = await repo.update(parsed.data);
+  if (error) return dbFail("paiement", error);
+  return { ok: true, message: SAVED };
 }

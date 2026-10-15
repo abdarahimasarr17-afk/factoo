@@ -1,7 +1,7 @@
 import sharp from "sharp";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { GENERIC_ERROR } from "@/lib/form-state";
-import { deleteLogo, finishOnboarding, saveBilling, saveCompany, saveLogo, type ProfileRepo } from "@/lib/settings";
+import { deleteLogo, finishOnboarding, saveBilling, saveCompany, saveLogo, savePayment, type ProfileRepo } from "@/lib/settings";
 
 function fakeRepo(overrides: Partial<ProfileRepo> = {}): ProfileRepo {
   return {
@@ -118,5 +118,19 @@ describe("saveLogo / deleteLogo", () => {
     expect(await deleteLogo(repo, "u1/logo.webp")).toEqual({ ok: true, message: "Logo retiré." });
     expect(repo.update).toHaveBeenCalledWith({ logo_path: null });
     expect(repo.removeLogo).toHaveBeenCalledWith("u1/logo.webp");
+  });
+});
+
+describe("savePayment", () => {
+  it("enregistre les coordonnées de paiement", async () => {
+    const repo = fakeRepo();
+    expect(await savePayment(repo, { waveCountryCode: "221", wavePhone: "771234567", omCountryCode: "221", omPhone: "", iban: "", paymentNote: "Virement sous 30 jours" })).toEqual({ ok: true, message: "Enregistré ✓" });
+    expect(repo.update).toHaveBeenCalledWith({ wave_number: "+221771234567", orange_money_number: null, iban: null, payment_note: "Virement sous 30 jours" });
+  });
+  it("erreurs de champ sans écriture", async () => {
+    const repo = fakeRepo();
+    const state = await savePayment(repo, { waveCountryCode: "221", wavePhone: "12", omCountryCode: "221", omPhone: "", iban: "", paymentNote: "" });
+    expect(state.fieldErrors?.wavePhone).toBe("Numéro invalide : 8 à 10 chiffres");
+    expect(repo.update).not.toHaveBeenCalled();
   });
 });
