@@ -3,8 +3,11 @@ import {
   parseBilling,
   parseClient,
   parseCompany,
+  parseInvoice,
+  parseMarkPaid,
   parseOnboarding,
   parseOtp,
+  parsePayment,
   parseReset,
   parseSignIn,
   parseSignUp,
@@ -176,5 +179,106 @@ describe("schémas d’authentification", () => {
   it("réinitialisation : code et nouveau mot de passe", () => {
     const r = parseReset({ email: "awa@exemple.sn", code: "123456", password: "abc" });
     expect(!r.success && r.fieldErrors.password).toBe("8 caractères minimum");
+  });
+});
+
+describe("parseInvoice", () => {
+  const today = "2026-10-15";
+  const base = {
+    clientId: "8f1c2f9e-3b1a-4c6e-9d2a-1a2b3c4d5e6f", dueKind: "30", dueDate: "", currency: "XOF", vatRate: "18",
+    discountType: "", discountValue: "", note: "",
+    "lines.0.description": "Logo", "lines.0.quantity": "1", "lines.0.unitPrice": "150 000",
+    "lines.1.description": "Cartes de visite", "lines.1.quantity": "2,5", "lines.1.unitPrice": "10000",
+  };
+
+  it("reconstruit les lignes et convertit les montants", () => {
+    const r = parseInvoice(base, today);
+    expect(r).toEqual({
+      success: true,
+      data: {
+        client_id: base.clientId, due_kind: "30", due_date: null, currency: "XOF", vat_rate: 18, discount: null, note: null,
+        lines: [
+          { description: "Logo", quantity: 1, unit_price: 150000 },
+          { description: "Cartes de visite", quantity: 2.5, unit_price: 10000 },
+        ],
+      },
+    });
+  });
+
+  it("ignore les lignes entièrement vides", () => {
+    const r = parseInvoice({ ...base, "lines.2.description": "", "lines.2.quantity": "", "lines.2.unitPrice": "" }, today);
+    expect(r.success && r.data.lines).toHaveLength(2);
+  });
+
+  it("indexe les erreurs de ligne", () => {
+    const r = parseInvoice({ ...base, "lines.1.quantity": "0", "lines.0.description": " " }, today);
+    expect(!r.success && r.fieldErrors["lines.1.quantity"]).toBe("Quantité invalide");
+    expect(!r.success && r.fieldErrors["lines.0.description"]).toBe("Désignation obligatoire");
+  });
+
+  it("exige au moins une ligne", () => {
+    const r = parseInvoice({ ...base, "lines.0.description": "", "lines.0.quantity": "", "lines.0.unitPrice": "", "lines.1.description": "", "lines.1.quantity": "", "lines.1.unitPrice": "" }, today);
+    expect(!r.success && r.fieldErrors.lines).toBe("Ajoutez au moins une ligne.");
+  });
+
+  it("prix en euros avec centimes ; décimales refusées en FCFA", () => {
+    const eur = parseInvoice({ ...base, currency: "EUR", "lines.0.unitPrice": "99,90" }, today);
+    expect(eur.success && eur.data.lines[0].unit_price).toBe(9990);
+    const xof = parseInvoice({ ...base, "lines.0.unitPrice": "99,90" }, today);
+    expect(!xof.success && xof.fieldErrors["lines.0.unitPrice"]).toBe("Prix invalide");
+  });
+
+  it("client facultatif pour un brouillon", () => {
+    const r = parseInvoice({ ...base, clientId: "" }, today);
+    expect(r.success && r.data.client_id).toBeNull();
+  });
+
+  it("date précise obligatoire et non passée", () => {
+    expect(parseInvoice({ ...base, dueKind: "date", dueDate: "" }, today)).toMatchObject({ success: false, fieldErrors: { dueDate: "Choisissez une date" } });
+    expect(parseInvoice({ ...base, dueKind: "date", dueDate: "2026-10-14" }, today)).toMatchObject({ success: false, fieldErrors: { dueDate: "L’échéance ne peut pas être dans le passé." } });
+    const ok = parseInvoice({ ...base, dueKind: "date", dueDate: "2026-12-01" }, today);
+    expect(ok.success && ok.data.due_date).toBe("2026-12-01");
+  });
+
+  it("remise en % ou en montant", () => {
+    const pct = parseInvoice({ ...base, discountType: "percent", discountValue: "12,5" }, today);
+    expect(pct.success && pct.data.discount).toEqual({ type: "percent", value: 12.5 });
+    const amt = parseInvoice({ ...base, discountType: "amount", discountValue: "5 000" }, today);
+    expect(amt.success && amt.data.discount).toEqual({ type: "amount", value: 5000 });
+    const bad = parseInvoice({ ...base, discountType: "percent", discountValue: "120" }, today);
+    expect(!bad.success && bad.fieldErrors.discountValue).toBe("Remise invalide");
+  });
+
+  it("TVA avec virgule", () => {
+    const r = parseInvoice({ ...base, vatRate: "19,25" }, today);
+    expect(r.success && r.data.vat_rate).toBe(19.25);
+  });
+});
+
+describe("parseMarkPaid", () => {
+  it("date ≤ aujourd’hui et moyen connu", () => {
+    expect(parseMarkPaid({ paidAt: "2026-10-15", method: "wave" }, "2026-10-15")).toEqual({ success: true, data: { paid_at: "2026-10-15", payment_method: "wave" } });
+    expect(parseMarkPaid({ paidAt: "2026-10-16", method: "wave" }, "2026-10-15")).toMatchObject({ success: false, fieldErrors: { paidAt: "La date ne peut pas être dans le futur." } });
+    expect(parseMarkPaid({ paidAt: "2026-10-15", method: "bitcoin" }, "2026-10-15")).toMatchObject({ success: false, fieldErrors: { method: "Choisissez un moyen de paiement" } });
+  });
+});
+
+describe("parsePayment", () => {
+  it("numéros normalisés, IBAN compacté, champs vides → null", () => {
+    expect(parsePayment({ waveCountryCode: "221", wavePhone: "77 123 45 67", omCountryCode: "221", omPhone: "", iban: "sn08 sn01 0015 2000", paymentNote: "" })).toEqual({
+      success: true,
+      data: { wave_number: "+221771234567", orange_money_number: null, iban: "SN08SN0100152000", payment_note: null },
+    });
+  });
+  it("refuse un numéro invalide", () => {
+    expect(parsePayment({ waveCountryCode: "221", wavePhone: "123", omCountryCode: "221", omPhone: "", iban: "", paymentNote: "" })).toMatchObject({ success: false, fieldErrors: { wavePhone: "Numéro invalide : 8 à 10 chiffres" } });
+  });
+});
+
+describe("parseBilling — échéance par défaut", () => {
+  it("facultative ; 0, 15 ou 30", () => {
+    expect(parseBilling({ currency: "XOF", vatRate: "18", dueDays: "15" })).toEqual({ success: true, data: { currency: "XOF", vat_rate: 18, default_due_days: 15 } });
+    expect(parseBilling({ currency: "XOF", vatRate: "18" })).toEqual({ success: true, data: { currency: "XOF", vat_rate: 18 } });
+    expect(parseBilling({ currency: "XOF", vatRate: "18", dueDays: "45" })).toMatchObject({ success: false, fieldErrors: { dueDays: "Choisissez une échéance" } });
   });
 });
