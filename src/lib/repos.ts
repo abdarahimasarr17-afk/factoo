@@ -49,7 +49,7 @@ export function clientsRepo(supabase: SupabaseClient, userId: string): ClientsRe
 export async function getProfile(supabase: SupabaseClient, userId: string): Promise<Profile> {
   const { data, error } = await supabase.from("profiles").select("*").eq("id", userId).single();
   if (error || !data) throw new Error(`[profil] lecture impossible : ${error?.message ?? "profil absent"}`);
-  return { ...data, vat_rate: Number(data.vat_rate) } as Profile;
+  return { ...data, vat_rate: Number(data.vat_rate), default_due_days: Number(data.default_due_days ?? 30) } as Profile;
 }
 
 export async function listClients(supabase: SupabaseClient, search: string): Promise<Client[]> {

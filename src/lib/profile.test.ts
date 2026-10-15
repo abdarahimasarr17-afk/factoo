@@ -16,6 +16,11 @@ const empty: Profile = {
   currency: "XOF",
   vat_rate: 18,
   onboarded_at: null,
+  wave_number: null,
+  orange_money_number: null,
+  iban: null,
+  payment_note: null,
+  default_due_days: 30,
 };
 
 describe("profileCompletion", () => {

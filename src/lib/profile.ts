@@ -14,6 +14,11 @@ export type Profile = {
   logo_path: string | null;
   currency: Currency;
   vat_rate: number;
+  wave_number: string | null;
+  orange_money_number: string | null;
+  iban: string | null;
+  payment_note: string | null;
+  default_due_days: 0 | 15 | 30;
   onboarded_at: string | null;
 };
 
