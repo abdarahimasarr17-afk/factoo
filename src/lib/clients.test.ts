@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { archiveClient, clientToFormValues, saveClient, type ClientsRepo } from "@/lib/clients";
+import { archiveClient, clientToFormValues, quickCreateClient, saveClient, type ClientsRepo } from "@/lib/clients";
 import { GENERIC_ERROR } from "@/lib/form-state";
 
 function fakeRepo(overrides: Partial<ClientsRepo> = {}): ClientsRepo {
@@ -76,5 +76,15 @@ describe("clientToFormValues", () => {
       ),
     ).toEqual({ name: "Teranga", countryCode: "225", phone: "0701020304", email: "", address: "", city: "Abidjan", country: "CI", taxId: "" });
     expect(clientToFormValues(null, "226")).toMatchObject({ name: "", countryCode: "226", phone: "" });
+  });
+});
+
+describe("quickCreateClient", () => {
+  it("crée et renvoie le client pour le sélectionner", async () => {
+    const repo = fakeRepo({ create: vi.fn(async () => ({ error: null, id: "c9" })) });
+    expect(await quickCreateClient(repo, { ...form, name: "Awa" })).toEqual({ ok: true, client: { id: "c9", name: "Awa" } });
+  });
+  it("erreurs de champ", async () => {
+    expect(await quickCreateClient(fakeRepo(), { ...form, name: "" })).toEqual({ ok: false, fieldErrors: { name: "Le nom est obligatoire" } });
   });
 });

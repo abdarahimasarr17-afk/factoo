@@ -6,7 +6,7 @@ import { parseClient, type ClientField, type ClientInput } from "@/lib/validatio
 export type Client = ClientInput & { id: string };
 
 export interface ClientsRepo {
-  create(row: ClientInput): Promise<DbResult>;
+  create(row: ClientInput): Promise<DbResult & { id?: string }>;
   update(id: string, row: ClientInput): Promise<DbResult & { found: boolean }>;
   archive(id: string): Promise<DbResult & { found: boolean }>;
 }
@@ -63,4 +63,18 @@ export function clientToFormValues(client: Client | null, defaultDial: string) {
     country: client?.country ?? "",
     taxId: client?.tax_id ?? "",
   };
+}
+
+export async function quickCreateClient(
+  repo: ClientsRepo,
+  raw: Record<string, unknown>,
+): Promise<{ ok: true; client: { id: string; name: string } } | { ok: false; fieldErrors?: Partial<Record<ClientField, string>>; message?: string }> {
+  const parsed = parseClient(raw);
+  if (!parsed.success) return { ok: false, fieldErrors: parsed.fieldErrors };
+  const { error, id } = await repo.create(parsed.data);
+  if (error || !id) {
+    console.error("[clients] création rapide :", error?.message ?? "identifiant manquant");
+    return { ok: false, message: GENERIC_ERROR };
+  }
+  return { ok: true, client: { id, name: parsed.data.name } };
 }
