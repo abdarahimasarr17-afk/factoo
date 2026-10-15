@@ -169,7 +169,7 @@ export function WaitlistForm() {
         <input id="wl-website" name="website" tabIndex={-1} autoComplete="off" defaultValue="" />
       </div>
 
-      <button type="submit" disabled={pending} className={buttonClass("light", "md", "mt-2 w-full")}>
+      <button type="submit" disabled={pending} className={buttonClass("brand", "md", "mt-2 w-full")}>
         {pending ? "Inscription…" : "Je m’inscris"}
       </button>
 

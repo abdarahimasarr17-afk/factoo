@@ -123,11 +123,6 @@ export const FAQ: { question: string; answer: string }[] = [
     answer:
       "3 factures par mois avec PDF conforme, numérotation automatique et gestion de vos clients. Le lien de paiement et les relances automatiques sont inclus dans le plan Pro.",
   },
-  {
-    question: "Quand Factoo sera-t-il disponible ?",
-    answer:
-      "Très bientôt. Les inscrits de la liste d’attente sont prévenus en premier sur WhatsApp et profitent du tarif de lancement.",
-  },
 ];
 
 export const PAYMENT_METHODS: { name: string; color: string; logo?: string }[] = [
