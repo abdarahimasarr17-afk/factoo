@@ -47,12 +47,12 @@ export function ResetPasswordFlow() {
     <form action={resetAction} noValidate className="grid gap-4">
       <FormMessage state={resetState.message ? resetState : requestState} />
       <input type="hidden" name="email" value={values.email} />
-      <Field id="code" label="Code à 6 chiffres" error={errors.code}>
+      <Field id="code" label="Code reçu par email" error={errors.code}>
         <input
           id="code"
           inputMode="numeric"
           autoComplete="one-time-code"
-          maxLength={7}
+          maxLength={10}
           placeholder="123456"
           aria-invalid={Boolean(errors.code)}
           aria-describedby="code-msg"

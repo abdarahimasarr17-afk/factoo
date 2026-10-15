@@ -31,12 +31,12 @@ export function VerifyCodeForm({ email }: { email: string }) {
       <form action={action} noValidate className="grid gap-4">
         <FormMessage state={state} />
         <input type="hidden" name="email" value={email} />
-        <Field id="code" label="Code à 6 chiffres" error={state.fieldErrors?.code}>
+        <Field id="code" label="Code reçu par email" error={state.fieldErrors?.code}>
           <input
             id="code"
             inputMode="numeric"
             autoComplete="one-time-code"
-            maxLength={7}
+            maxLength={10}
             placeholder="123456"
             aria-invalid={Boolean(state.fieldErrors?.code)}
             aria-describedby="code-msg"

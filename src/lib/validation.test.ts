@@ -164,10 +164,13 @@ describe("schémas d’authentification", () => {
     expect(!r.success && r.fieldErrors.password).toBe("Mot de passe requis");
   });
 
-  it("code : 6 chiffres, espaces ignorés", () => {
+  it("code : 6 à 8 chiffres, espaces ignorés", () => {
     expect(parseOtp({ email: "awa@exemple.sn", code: "482 913" })).toEqual({ success: true, data: { email: "awa@exemple.sn", code: "482913" } });
+    expect(parseOtp({ email: "awa@exemple.sn", code: "4164 5843" })).toEqual({ success: true, data: { email: "awa@exemple.sn", code: "41645843" } });
     const r = parseOtp({ email: "awa@exemple.sn", code: "48291" });
-    expect(!r.success && r.fieldErrors.code).toBe("Le code contient 6 chiffres");
+    expect(!r.success && r.fieldErrors.code).toBe("Le code contient 6 à 8 chiffres");
+    const long = parseOtp({ email: "awa@exemple.sn", code: "123456789" });
+    expect(!long.success && long.fieldErrors.code).toBe("Le code contient 6 à 8 chiffres");
   });
 
   it("réinitialisation : code et nouveau mot de passe", () => {

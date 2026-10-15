@@ -216,7 +216,7 @@ export type AuthField = "email" | "password" | "code" | "terms";
 const password = z.preprocess(asString, z.string().min(8, "8 caractères minimum").max(72, "72 caractères maximum"));
 const otpCode = z.preprocess(
   (v) => asString(v).replace(/\s/g, ""),
-  z.string().regex(/^\d{6}$/, "Le code contient 6 chiffres"),
+  z.string().regex(/^\d{6,8}$/, "Le code contient 6 à 8 chiffres"),
 );
 
 const signUpSchema = z.object({

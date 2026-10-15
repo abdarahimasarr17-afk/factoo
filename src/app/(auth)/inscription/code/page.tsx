@@ -11,7 +11,7 @@ export default async function VerifyCodePage({ searchParams }: { searchParams: P
     <>
       <h1 className="text-2xl font-extrabold">Confirmez votre email</h1>
       <p className="mt-1 text-sm text-slate-500">
-        Nous avons envoyé un code à 6 chiffres à <span className="font-semibold text-slate-800">{email}</span>. Pensez à
+        Nous avons envoyé un code à <span className="font-semibold text-slate-800">{email}</span>. Pensez à
         regarder dans les spams.
       </p>
       <div className="mt-6">
