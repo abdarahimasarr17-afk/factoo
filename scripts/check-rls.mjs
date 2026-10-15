@@ -70,6 +70,70 @@ try {
 
   const { data: removed } = await a.client.storage.from("logos").remove([`${a.id}/test-${stamp}.webp`]);
   check("A peut supprimer son propre logo", removed?.length === 1);
+  // ---------- Factures ----------
+  const line = (position) => ({ position, description: `Prestation ${position}`, quantity: 1, unit_price: 1000, line_total: 1000 });
+  const draftData = (clientId) => ({
+    client_id: clientId, due_kind: "30", due_date: "", currency: "XOF", vat_rate: 18, discount_type: "",
+    discount_value: "", note: "", subtotal: 1000, discount_amount: 0, vat_amount: 180, total: 1180,
+  });
+
+  const { data: draftId, error: draftError } = await a.client.rpc("save_invoice_draft", {
+    p_id: null, p_data: draftData(clientId), p_lines: [line(0)],
+  });
+  check("A enregistre un brouillon", !draftError && Boolean(draftId), draftError?.message);
+
+  const { data: seenInvoice } = await b.client.from("invoices").select("id").eq("id", draftId);
+  check("B ne voit pas la facture de A", seenInvoice?.length === 0);
+
+  const { error: foreignIssue } = await b.client.rpc("issue_invoice", { p_id: draftId, p_logo_path: null });
+  check("B ne peut pas émettre la facture de A", foreignIssue?.message === "not_found", foreignIssue?.message);
+
+  const { error: foreignClient } = await b.client.rpc("save_invoice_draft", {
+    p_id: null, p_data: draftData(clientId), p_lines: [line(0)],
+  });
+  check("B ne peut pas facturer le client de A", foreignClient?.message === "client_not_found", foreignClient?.message);
+
+  const { error: forgedStatus } = await a.client
+    .from("invoices")
+    .insert({ currency: "XOF", vat_rate: 18, status: "issued", number: "FAC-1999-0001" });
+  check("A ne peut pas insérer une facture déjà émise", Boolean(forgedStatus));
+
+  const { data: number, error: issueError } = await a.client.rpc("issue_invoice", { p_id: draftId, p_logo_path: null });
+  check("A émet sa facture", !issueError && /^FAC-\d{4}-0001$/.test(number ?? ""), issueError?.message ?? number);
+
+  const { data: editedIssued } = await a.client.from("invoices").update({ note: "modifiée" }).eq("id", draftId).select("id");
+  check("A ne peut pas modifier une facture émise", (editedIssued?.length ?? 0) === 0);
+
+  const { error: editLines } = await a.client.from("invoice_lines").insert({ invoice_id: draftId, position: 9, description: "ajout", quantity: 1, unit_price: 1, line_total: 1 });
+  check("A ne peut pas ajouter de ligne à une facture émise", Boolean(editLines));
+
+  const { error: foreignPaid } = await b.client.rpc("mark_invoice_paid", { p_id: draftId, p_paid_at: new Date().toISOString().slice(0, 10), p_method: "wave" });
+  check("B ne peut pas marquer payée la facture de A", foreignPaid?.message === "not_found", foreignPaid?.message);
+
+  const ids = [];
+  for (let i = 0; i < 10; i++) {
+    const { data } = await a.client.rpc("save_invoice_draft", { p_id: null, p_data: draftData(clientId), p_lines: [line(0)] });
+    ids.push(data);
+  }
+  const numbers = await Promise.all(ids.map((id) => a.client.rpc("issue_invoice", { p_id: id, p_logo_path: null })));
+  const seqs = numbers.map((r) => Number(r.data?.slice(-4))).sort((x, y) => x - y);
+  check("10 émissions simultanées : 0002 à 0011 sans trou ni doublon", seqs.join(",") === "2,3,4,5,6,7,8,9,10,11", seqs.join(","));
+
+  const anon = createClient(url, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY, { auth: { persistSession: false } });
+  const { error: anonRead } = await anon.from("invoices").select("id").limit(1);
+  check("un visiteur anonyme n’a pas accès aux factures", Boolean(anonRead));
+  const site = process.env.CHECK_SITE_URL;
+  if (site) {
+    const { data: draftForPage } = await a.client.rpc("save_invoice_draft", { p_id: null, p_data: draftData(clientId), p_lines: [line(0)] });
+    const { data: tokens } = await a.client.from("invoices").select("id,public_token,status").in("id", [draftId, draftForPage]);
+    const issuedToken = tokens.find((t) => t.id === draftId).public_token;
+    const draftToken = tokens.find((t) => t.id === draftForPage).public_token;
+    check("page publique : facture émise visible", (await fetch(`${site}/f/${issuedToken}`)).status === 200);
+    check("page publique : brouillon introuvable", (await fetch(`${site}/f/${draftToken}`)).status === 404);
+    check("page publique : faux jeton introuvable", (await fetch(`${site}/f/AAAAAAAAAAAAAAAAAAAAAAAA`)).status === 404);
+    const pdf = await fetch(`${site}/f/${issuedToken}/pdf`);
+    check("PDF public : application/pdf", pdf.headers.get("content-type") === "application/pdf");
+  }
 } catch (error) {
   check("exécution du script", false, String(error?.message ?? error));
 } finally {
