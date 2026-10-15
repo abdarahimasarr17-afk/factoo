@@ -1,5 +1,6 @@
 import { ArrowRight, MessageCircle } from "lucide-react";
 import Link from "next/link";
+import { FloatingInvoices } from "@/components/landing/FloatingInvoices";
 import { HeroVisual } from "@/components/landing/HeroVisual";
 import { buttonClass } from "@/components/ui/button";
 import { Container } from "@/components/ui/Container";
@@ -14,6 +15,7 @@ export function Hero() {
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(20,184,166,0.35),transparent_60%)]"
       />
+      <FloatingInvoices />
       <Container className="relative grid items-center gap-12 lg:grid-cols-2">
         <div>
           <h1 className="text-4xl font-extrabold leading-[1.1] tracking-tight sm:text-5xl lg:text-6xl">

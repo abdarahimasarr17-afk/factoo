@@ -61,6 +61,22 @@ section[id] {
   animation: float 6s ease-in-out infinite;
 }
 
+/* Factures flottantes du hero : la rotation propre à chaque papier est conservée pendant le flottement. */
+@keyframes invoice-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--invoice-rotate, 0deg));
+  }
+  50% {
+    transform: translateY(-14px) rotate(var(--invoice-rotate, 0deg));
+  }
+}
+
+.animate-invoice-float {
+  transform: rotate(var(--invoice-rotate, 0deg));
+  animation: invoice-float 7s ease-in-out infinite;
+}
+
 @keyframes dash {
   to {
     stroke-dashoffset: -24;
@@ -93,6 +109,7 @@ section[id] {
     scroll-behavior: auto;
   }
   .animate-float,
+  .animate-invoice-float,
   .animate-dash,
   .animate-pulse-ring {
     animation: none;
