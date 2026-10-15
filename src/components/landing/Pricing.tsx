@@ -68,7 +68,7 @@ export function Pricing() {
         </div>
         <p className="mx-auto mt-8 flex max-w-2xl items-center justify-center gap-3 rounded-2xl bg-[#00C853] p-4 text-center font-bold text-black">
           <Gift className="h-5 w-5 shrink-0 text-black" aria-hidden="true" />
-          Tarif de lancement garanti aux inscrits de la liste d’attente.
+          Tarif de lancement garanti pour les premiers inscrits.
         </p>
       </Container>
     </section>
