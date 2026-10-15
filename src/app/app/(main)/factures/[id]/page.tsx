@@ -1,4 +1,5 @@
 // src/app/app/(main)/factures/[id]/page.tsx
+import { headers } from "next/headers";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { InvoiceActions } from "@/components/app/InvoiceActions";
@@ -51,7 +52,9 @@ export default async function InvoicePage({ params, searchParams }: { params: Pr
     );
   }
 
-  const url = publicInvoiceUrl(record.public_token);
+  const h = await headers();
+  const origin = `${h.get("x-forwarded-proto") ?? "https"}://${h.get("x-forwarded-host") ?? h.get("host")}`;
+  const url = publicInvoiceUrl(record.public_token, origin);
   const message = invoiceWhatsappMessage({
     clientName: view.buyer?.name ?? "",
     number: record.number as string,

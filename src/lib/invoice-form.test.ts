@@ -14,8 +14,10 @@ describe("invoiceToFormValues", () => {
 });
 
 describe("publicInvoiceUrl", () => {
-  it("utilise l’URL du site", () => {
+  it("utilise l’URL du site, sinon l’origine de la requête", () => {
     process.env.NEXT_PUBLIC_SITE_URL = "https://factoo-wine.vercel.app/";
-    expect(publicInvoiceUrl("abc")).toBe("https://factoo-wine.vercel.app/f/abc");
+    expect(publicInvoiceUrl("abc", "http://localhost:3000")).toBe("https://factoo-wine.vercel.app/f/abc");
+    process.env.NEXT_PUBLIC_SITE_URL = "";
+    expect(publicInvoiceUrl("abc", "http://localhost:3000")).toBe("http://localhost:3000/f/abc");
   });
 });

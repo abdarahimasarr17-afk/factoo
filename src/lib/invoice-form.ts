@@ -48,7 +48,8 @@ export function invoiceToFormValues(
   };
 }
 
-export function publicInvoiceUrl(token: string): string {
-  const base = (process.env.NEXT_PUBLIC_SITE_URL ?? "").replace(/\/$/, "");
+// L'URL du site configurée prime ; à défaut, l'origine de la requête en cours (jamais un lien relatif).
+export function publicInvoiceUrl(token: string, requestOrigin: string): string {
+  const base = (process.env.NEXT_PUBLIC_SITE_URL || requestOrigin).replace(/\/$/, "");
   return `${base}/f/${token}`;
 }
