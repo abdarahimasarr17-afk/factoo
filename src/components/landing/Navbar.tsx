@@ -34,7 +34,7 @@ export function Navbar() {
             ))}
           </ul>
           <div className="flex items-center gap-2">
-            <Link href="/connexion" className="whitespace-nowrap px-2 text-sm font-medium text-white/70 transition hover:text-white">
+            <Link href="/connexion" className="hidden whitespace-nowrap px-2 text-sm font-medium text-white/70 transition hover:text-white sm:inline">
               Se connecter
             </Link>
             <Link href="/inscription" className={buttonClass("brand", "xs")}>
@@ -68,6 +68,15 @@ export function Navbar() {
                   </a>
                 </li>
               ))}
+              <li className="sm:hidden">
+                <Link
+                  href="/connexion"
+                  onClick={close}
+                  className="block rounded-xl px-3 py-2.5 font-semibold text-white hover:bg-white/5"
+                >
+                  Se connecter
+                </Link>
+              </li>
             </ul>
           </div>
         )}
