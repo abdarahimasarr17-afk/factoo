@@ -28,6 +28,11 @@ describe("dashboardStats", () => {
     expect(s.months.map((m) => m.amount)).toEqual([0, 0, 0, 0, 50000, 100000]);
     expect(s.months.map((m) => m.label)).toEqual(["mai", "juin", "juil.", "août", "sept.", "oct."]);
   });
+  it("encaissé du mois précédent et évolution", () => {
+    expect(s.previousCollected).toBe(50000);
+    expect(s.collectedChange).toBe(100); // 100 000 contre 50 000
+    expect(dashboardStats([], "XOF", today).collectedChange).toBeNull();
+  });
   it("signale les autres devises exclues", () => {
     expect(s.otherCurrencies).toEqual(["EUR"]);
   });

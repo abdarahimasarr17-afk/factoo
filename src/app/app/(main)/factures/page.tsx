@@ -65,8 +65,18 @@ export default async function InvoicesPage({ searchParams }: { searchParams: Pro
             <li key={r.id}>
               <Link href={`/app/factures/${r.id}`} className="flex items-center justify-between gap-3 px-4 py-3 hover:bg-slate-50">
                 <div className="min-w-0">
-                  <p className="flex items-center gap-2 truncate font-semibold">{r.number ?? "Brouillon"} <StatusBadge status={displayStatus(r, today)} /></p>
-                  <p className="truncate text-sm text-slate-500">{[r.client_name ?? "Sans client", r.due_date && r.status !== "draft" ? `échéance ${formatDateFr(r.due_date)}` : null].filter(Boolean).join(" · ")}</p>
+                  <p className="flex min-w-0 items-center gap-2 font-semibold">
+                    <span className="whitespace-nowrap">{r.number ?? "Brouillon"}</span>
+                    <span className="hidden shrink-0 sm:inline-flex">
+                      <StatusBadge status={displayStatus(r, today)} />
+                    </span>
+                  </p>
+                  <p className="mt-1 flex min-w-0 items-center gap-2 text-sm text-slate-500">
+                    <span className="shrink-0 sm:hidden">
+                      <StatusBadge status={displayStatus(r, today)} />
+                    </span>
+                    <span className="truncate">{[r.client_name ?? "Sans client", r.due_date && r.status !== "draft" ? `échéance ${formatDateFr(r.due_date)}` : null].filter(Boolean).join(" · ")}</span>
+                  </p>
                 </div>
                 <div className="flex shrink-0 items-center gap-2">
                   <span className="font-bold">{formatMoney(r.total, r.currency)}</span>

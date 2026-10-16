@@ -6,7 +6,16 @@ import type { Currency } from "@/lib/site";
 export type DashboardRow = { status: InvoiceStatus; total: number; currency: Currency; due_date: string | null; paid_at: string | null };
 export type Stat = { amount: number; count: number };
 export type MonthBar = { month: string; label: string; amount: number };
-export type DashboardStats = { collected: Stat; pending: Stat; overdue: Stat; months: MonthBar[]; otherCurrencies: Currency[] };
+export type DashboardStats = {
+  collected: Stat;
+  previousCollected: number;
+  // Évolution en % de l'encaissé par rapport au mois précédent ; null si le mois précédent est à 0.
+  collectedChange: number | null;
+  pending: Stat;
+  overdue: Stat;
+  months: MonthBar[];
+  otherCurrencies: Currency[];
+};
 
 const MONTH_LABELS = ["janv.", "févr.", "mars", "avr.", "mai", "juin", "juil.", "août", "sept.", "oct.", "nov.", "déc."];
 
@@ -47,5 +56,7 @@ export function dashboardStats(rows: DashboardRow[], currency: Currency, today: 
       if (bar) bar.amount += row.total;
     }
   }
-  return { collected, pending, overdue, months, otherCurrencies: [...others] };
+  const previousCollected = months[months.length - 2].amount;
+  const collectedChange = previousCollected > 0 ? Math.round(((collected.amount - previousCollected) / previousCollected) * 100) : null;
+  return { collected, previousCollected, collectedChange, pending, overdue, months, otherCurrencies: [...others] };
 }

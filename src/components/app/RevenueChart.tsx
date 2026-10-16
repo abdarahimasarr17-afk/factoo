@@ -24,7 +24,7 @@ export function RevenueChart({ months, currency }: { months: MonthBar[]; currenc
   const shown = active ?? months.length - 1;
 
   return (
-    <figure className="rounded-2xl border border-slate-200 bg-white p-5">
+    <figure className="rounded-xl border border-slate-200 bg-white p-6">
       <figcaption className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
         <span className="font-bold">Encaissé sur 6 mois</span>
         <span className="text-sm text-slate-500" aria-live="polite">
