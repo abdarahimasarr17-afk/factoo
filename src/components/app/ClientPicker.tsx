@@ -44,6 +44,16 @@ export function ClientPicker({ value, onChange, clients, error, defaultDial }: P
   return (
     <div>
       <Field id="clientId" label="Client" error={error}>
+        {options.length === 0 ? (
+          <div className="flex flex-col gap-3 rounded-xl border border-dashed border-slate-300 bg-slate-50 p-4 sm:flex-row sm:items-center sm:justify-between">
+            <input type="hidden" name="clientId" value="" />
+            <p className="text-sm text-slate-600">Vous n’avez pas encore de client.</p>
+            <button type="button" id="clientId" aria-describedby="clientId-msg" onClick={() => dialog.current?.showModal()} className={buttonClass("brand", "md", "shrink-0")}>
+              <Plus className="h-5 w-5" aria-hidden="true" />
+              Créer mon premier client
+            </button>
+          </div>
+        ) : (
         <div className="flex gap-2">
           <select
             id="clientId"
@@ -66,6 +76,7 @@ export function ClientPicker({ value, onChange, clients, error, defaultDial }: P
             <span className="hidden sm:inline">Nouveau</span>
           </button>
         </div>
+        )}
       </Field>
 
       <dialog ref={dialog} className="w-[min(28rem,calc(100vw-2rem))] rounded-2xl p-0 backdrop:bg-black/40">
